@@ -1,7 +1,15 @@
+using HaberPortal.Core.Interfaces;
+using HaberPortal.Core.Repositories;
+using HaberPortalý.Core.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Repository'leri DI container'a ekle
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<INewsRepository, NewsRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
