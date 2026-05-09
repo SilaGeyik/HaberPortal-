@@ -1,0 +1,106 @@
+﻿@{
+	Layout = "_Layout";
+}
+<style>
+	.news-detail-img {
+		width: 100%;
+		max-height: 500px;
+		object-fit: cover;
+		border-radius: 15px;
+	}
+
+	.comment-box {
+		background-color: #f9f9f9;
+		border-radius: 12px;
+		padding: 15px;
+		margin-bottom: 15px;
+		border-left: 5px solid #0d6efd;
+	}
+</style>
+<div class="row justify-content-center">
+	<div class="col-lg-9">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/Home/Index" class="text-decoration-none">Ana Sayfa</a></li>
+				<li class="breadcrumb-item active" id="bCategory">Haber</li>
+			</ol>
+		</nav>
+		<h1 id="nTitle" class="display-5 fw-bold mb-3 text-dark"></h1>
+		<div class="d-flex align-items-center mb-4 text-muted border-bottom pb-3">
+			<span id="nAuthor" class="me-4"><i class="fas fa-user-edit me-2"></i></span>
+			<span id="nDate"><i class="fas fa-calendar-alt me-2"></i></span>
+		</div>
+		<div class="mb-5 shadow-lg rounded-4 overflow-hidden">
+			<img id="nImg" class="news-detail-img" alt="Haber Görseli" style="display:none;">
+		</div>
+		<div id="nContent" class="fs-5 lh-lg mb-5 text-secondary px-2"></div>
+		<section class="mt-5 p-4 bg-white rounded-4 shadow-sm border">
+			<h4 class="fw-bold mb-4 text-primary"><i class="fas fa-comments me-2"></i>Okuyucu Yorumları</h4>
+			<div id="nComments" class="mb-4">
+			</div>
+			<hr class="my-4">
+			<div class="mt-4">
+				<h5 class="mb-3 fw-bold" id="commentPrompt">Düşüncelerinizi Paylaşın</h5>
+<textarea id="tComment" class="form-control border-0 bg-light mb-3 p-3" rows="4" placeholder="Bu içerik hakkında ne düşünüyorsunuz?"></textarea>
+				<button onclick="postComm()" class="btn btn-primary px-5 rounded-pill fw-bold">Yorum Gönder</button>
+			</div>
+		</section>
+	</div>
+</div>
+@section Scripts {
+	<script>
+		var newsId = new URLSearchParams(window.location.search).get('id');
+		var apiUrl = "https://localhost:7278/api/";
+		function load() {
+		$.get(apiUrl + "News/" + newsId, function(x) {
+		$("#nTitle").text(x.title);
+		$("#nContent").html(x.content.replace(/\n/g, '<br>'));
+		$("#nAuthor").html('<i class="fas fa-user-edit me-2 text-primary"></i>' + x.authorName);
+		$("#nDate").html('<i class="fas fa-calendar-alt me-2 text-primary"></i>' + new Date(x.publishedAt).toLocaleDateString('tr-TR'));
+		$("#bCategory").text(x.categoryName);
+		var img = document.getElementById("nImg");
+		img.src = x.imageUrl || "https://via.placeholder.com/1200x675?text=GYKHABER";
+		img.style.display = "block";
+		img.onerror = function() {
+		this.src = "https://via.placeholder.com/1200x675?text=Görsel+Yüklenemedi";
+		};
+		if(x.title.toLowerCase().includes("togg") || x.title.toLowerCase().includes("otomobil")) {
+		$("#commentPrompt").text("Yerli otomobil Togg hakkında ne düşünüyorsunuz?");
+		} else if(x.title.toLowerCase().includes("hasan hoca") || x.title.toLowerCase().includes("delphi")) {
+		$("#commentPrompt").text("Hasan Hoca ve Delphi dersleri hakkındaki görüşleriniz neler?");
+		}
+		var h = "";
+		if(x.comments && x.comments.length > 0) {
+		x.comments.forEach(c => {
+		h += `<div class="comment-box shadow-sm">
+		<div class="fw-bold text-primary small mb-1">${c.userName}</div>
+		<div class="text-dark small">${c.content}</div>
+		</div>`;
+		});
+		} else {
+		h = "<p class='text-muted fst-italic'>Bu habere henüz yorum yapılmamış. İlk yorumu siz yapın!</p>";
+		}
+		$("#nComments").html(h);
+		});
+		}
+		function postComm() {
+		var token = localStorage.getItem("token");
+		var commentBody = $("#tComment").val().trim();
+		if(!token) { alert("Lütfen yorum yapmak için giriş yapın!"); return; }
+		if(!commentBody) { alert("Yorum alanı boş bırakılamaz!"); return; }
+		$.ajax({
+		url: apiUrl + "Comments",
+		type: "POST",
+		headers: { "Authorization": "Bearer " + token },
+		contentType: "application/json",
+		data: JSON.stringify({ newsId: parseInt(newsId), content: commentBody }),
+		success: function() {
+		$("#tComment").val("");
+		alert("Yorumunuz başarıyla paylaşıldı!");
+		load(); 
+		}
+		});
+		}
+		$(document).ready(load);
+	</script>
+}

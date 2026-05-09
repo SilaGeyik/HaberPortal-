@@ -12,7 +12,6 @@ namespace UygAPI.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsApproved { get; set; } = true;
 
-        // Navigation Properties
         public virtual News News { get; set; }
         public virtual User User { get; set; }
     }

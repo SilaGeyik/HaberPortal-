@@ -10,7 +10,6 @@ namespace UygAPI.Models
         public int UserId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation Properties
         public virtual News News { get; set; }
         public virtual User User { get; set; }
     }

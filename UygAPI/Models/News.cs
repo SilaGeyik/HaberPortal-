@@ -19,7 +19,6 @@ namespace UygAPI.Models
         public bool IsPublished { get; set; } = false;
         public DateTime? PublishedAt { get; set; }
 
-        // Navigation Properties
         public virtual Category Category { get; set; }
         public virtual User Author { get; set; }
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UygAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateNew : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -320,9 +320,9 @@ namespace UygAPI.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedAt", "Description", "IsActive", "Name", "NormalizedName", "Slug" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3229), "Sistem Yöneticisi", true, "Admin", "ADMIN", "admin" },
-                    { 2, null, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3231), "Haber Editörü", true, "Editor", "EDITOR", "editor" },
-                    { 3, null, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3232), "Normal Kullanıcı", true, "User", "USER", "user" }
+                    { 1, null, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6250), "Sistem Yöneticisi", true, "Admin", "ADMIN", "admin" },
+                    { 2, null, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6252), "Haber Editörü", true, "Editor", "EDITOR", "editor" },
+                    { 3, null, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6254), "Normal Kullanıcı", true, "User", "USER", "user" }
                 });
 
             migrationBuilder.InsertData(
@@ -330,11 +330,11 @@ namespace UygAPI.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "Name", "Slug" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3327), "Güncel haberler", true, "Gündem", "gundem" },
-                    { 2, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3329), "Teknoloji haberleri", true, "Teknoloji", "teknoloji" },
-                    { 3, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3330), "Spor haberleri", true, "Spor", "spor" },
-                    { 4, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3331), "Ekonomi haberleri", true, "Ekonomi", "ekonomi" },
-                    { 5, new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3333), "Magazin haberleri", true, "Magazin", "magazin" }
+                    { 1, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6352), "Güncel haberler", true, "Gündem", "gundem" },
+                    { 2, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6353), "Teknoloji haberleri", true, "Teknoloji", "teknoloji" },
+                    { 3, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6355), "Spor haberleri", true, "Spor", "spor" },
+                    { 4, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6356), "Ekonomi haberleri", true, "Ekonomi", "ekonomi" },
+                    { 5, new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6358), "Magazin haberleri", true, "Magazin", "magazin" }
                 });
 
             migrationBuilder.CreateIndex(

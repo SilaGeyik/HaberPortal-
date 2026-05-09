@@ -9,7 +9,6 @@ namespace UygAPI.Models
         public string Name { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
 
-        // Navigation Properties
         public virtual ICollection<NewsTag> NewsTags { get; set; } = new List<NewsTag>();
     }
 }

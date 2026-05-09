@@ -9,7 +9,7 @@ namespace UygAPI.Models
         [Key]
         public int TagId { get; set; }
 
-        // Navigation Properties
+        
         public virtual News News { get; set; }
         public virtual Tag Tag { get; set; }
     }

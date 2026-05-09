@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold m-0"><i class="fas fa-comments text-primary me-2"></i>Yorum Yönetimi</h2>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover align-middle border-top">
+        <thead>
+            <tr class="text-muted small text-uppercase bg-light">
+                <th class="ps-3 py-3">Kullanıcı</th>
+                <th class="py-3">Yorum İçeriği</th>
+                <th class="text-end pe-3 py-3">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody id="commentList"></tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function loadComments() {
+            var token = localStorage.getItem("token");
+
+            $("#commentList").html("<tr><td colspan='3' class='text-center p-4 text-warning fw-bold'><i class='fas fa-spinner fa-spin me-2'></i>Yükleniyor...</td></tr>");
+
+            $.ajax({
+                url: "https://localhost:7278/api/Comments",
+                type: "GET",
+                headers: { "Authorization": "Bearer " + token },
+                success: function(data) {
+                    var h = "";
+                    if (data && data.length > 0) {
+                        data.forEach(c => {
+                            h += `<tr>
+                            <td class="ps-3 py-3"><strong>${c.userName || 'Kullanıcı'}</strong></td>
+                            <td class="text-muted">${c.content || c.Content}</td>
+                            <td class="text-end pe-3">
+                                <button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteComment(${c.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                            </tr>`;
+                        });
+                    } else {
+                        h = "<tr><td colspan='3' class='text-center p-5 text-muted'>Sistemde henüz hiç yorum bulunmuyor.</td></tr>";
+                    }
+                    $("#commentList").html(h);
+                },
+                error: function(xhr) {
+                    
+                    console.error("Yorumlar alınamadı:", xhr);
+                    var errorMsg = `<tr><td colspan='3' class='text-center p-5 text-danger'>
+                        <h5 class='fw-bold'><i class='fas fa-exclamation-triangle me-2'></i> API Bağlantı Hatası!</h5>
+                        <p class='text-dark'>Durum Kodu: <b>${xhr.status}</b></p>
+                        <p class='small text-muted mb-0'>
+                            <b>Eğer 404 alıyorsanız:</b> API projende (Controllers/CommentsController.cs) tüm yorumları listeleyen <code>[HttpGet]</code> metodu yazılmamış demektir.<br>
+                            <b>Eğer 401 alıyorsanız:</b> Oturum süreniz dolmuştur, sağ alttan "Çıkış Yap" deyip tekrar admin girişi yapın.
+                        </p>
+                    </td></tr>`;
+                    $("#commentList").html(errorMsg);
+                }
+            });
+        }
+
+        function deleteComment(id) {
+            if(confirm("Bu yorumu silmek istediğinize emin misiniz?")) {
+                $.ajax({
+                    url: "https://localhost:7278/api/Comments/" + id,
+                    type: "DELETE",
+                    headers: { "Authorization": "Bearer " + localStorage.getItem("token") },
+                    success: function() { loadComments(); },
+                    error: function(xhr) { alert("Silme işlemi başarısız! Durum: " + xhr.status); }
+                });
+            }
+        }
+
+        $(document).ready(loadComments);
+    </script>
+}

@@ -1,8 +1,95 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	Layout = "_Layout";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+	<div class="d-flex justify-content-between align-items-center mb-5 mt-2">
+		<h2 class="fw-bold border-start border-primary border-4 ps-3 m-0">Günün Öne Çıkanları</h2>
+		<div class="text-muted small">Aktif <span id="newsCount" class="fw-bold text-primary">0</span> haber listeleniyor</div>
+	</div>
+	<div class="row" id="newsContainer" style="display:none;"></div>
+	<div id="loader" class="text-center my-5 py-5">
+		<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+	</div>
 </div>
+<style>
+
+	.news-card {
+		border-radius: 12px;
+		transition: all 0.3s ease;
+		border: 1px solid #f0f0f0 !important;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+		.news-card:hover {
+			transform: translateY(-7px);
+			box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+		}
+
+	.img-container {
+		height: 210px;
+		position: relative;
+		overflow: hidden;
+	}
+
+		.img-container img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+	.category-badge {
+		position: absolute;
+		bottom: 12px;
+		left: 12px;
+		font-size: 0.65rem;
+		padding: 5px 15px;
+	}
+	
+	.card-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		line-height: 1.4;
+		color: #212529;
+		margin-bottom: 15px;
+		display: block !important;
+		height: auto !important;
+		overflow: visible !important;
+		white-space: normal !important;
+		min-height: 60px; 
+	}
+</style>
+@section Scripts {
+	<script>
+		$(document).ready(function () { loadNews(null); });
+		function loadNews(catId) {
+		$("#newsContainer").hide(); $("#loader").show();
+		var url = apiUrl + (catId ? "News/category/" + catId : "News/latest?count=12");
+		$.get(url, function (data) {
+		var html = "";
+		$("#newsCount").text(data.length);
+		data.forEach(n => {
+		var finalImg = n.imageUrl || n.ImageUrl || "https://picsum.photos/400/220";
+		html += `
+		<div class="col-lg-4 col-md-6 mb-4">
+		<div class="card news-card shadow-sm border-0">
+		<div class="img-container">
+		<img src="${finalImg}" onerror="this.src='https://picsum.photos/400/220?random=${n.id}'">
+		<span class="badge bg-primary category-badge rounded-pill shadow-sm">${n.categoryName}</span>
+		</div>
+		<div class="card-body p-4 d-flex flex-column flex-grow-1">
+		<div class="text-muted small mb-2"><i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(n.publishedAt).toLocaleDateString()}</div>
+		<h5 class="card-title">${n.title}</h5>
+		<p class="text-muted small mb-4" style="flex-grow: 1;">${n.summary ? n.summary.substring(0, 85) + '...' : ''}</p>
+		<div class="mt-auto"><a href="/Home/NewsDetail?id=${n.id}" class="btn btn-outline-primary w-100 rounded-pill fw-bold btn-sm py-2">HABERİ OKU</a></div>
+		</div>
+		</div>
+		</div>`;
+		});
+		$("#loader").hide();
+		$("#newsContainer").html(html || "<p class='text-center'>İçerik bulunamadı.</p>").fadeIn(500);
+		});
+		}
+	</script>
+}

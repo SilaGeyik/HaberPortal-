@@ -64,33 +64,27 @@ namespace UygAPI.Data
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Unique constraint for Like (bir kullanıcı bir haberi sadece bir kez beğenebilir)
             builder.Entity<Like>()
                 .HasIndex(l => new { l.NewsId, l.UserId })
                 .IsUnique();
 
-            // NewsTag composite primary key
             builder.Entity<NewsTag>()
                 .HasKey(nt => new { nt.NewsId, nt.TagId });
 
-            // Category Name unique
             builder.Entity<Category>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
 
-            // Tag Name unique
             builder.Entity<Tag>()
                 .HasIndex(t => t.Name)
                 .IsUnique();
 
-            // Seed Data - Default Roles
             builder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Admin", NormalizedName = "ADMIN", Description = "Sistem Yöneticisi", Slug = "admin", CreatedAt = DateTime.UtcNow, IsActive = true },
                 new Role { Id = 2, Name = "Editor", NormalizedName = "EDITOR", Description = "Haber Editörü", Slug = "editor", CreatedAt = DateTime.UtcNow, IsActive = true },
                 new Role { Id = 3, Name = "User", NormalizedName = "USER", Description = "Normal Kullanıcı", Slug = "user", CreatedAt = DateTime.UtcNow, IsActive = true }
             );
 
-            // Seed Data - Default Categories
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Gündem", Slug = "gundem", Description = "Güncel haberler", IsActive = true, CreatedAt = DateTime.UtcNow },
                 new Category { Id = 2, Name = "Teknoloji", Slug = "teknoloji", Description = "Teknoloji haberleri", IsActive = true, CreatedAt = DateTime.UtcNow },

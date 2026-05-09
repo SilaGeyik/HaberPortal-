@@ -14,10 +14,8 @@ namespace UygAPI.Models
 
         public int Order { get; set; } = 0;
 
-        // Foreign Keys
         public int NewsId { get; set; }
 
-        // Navigation Properties
         public virtual News News { get; set; }
     }
 }

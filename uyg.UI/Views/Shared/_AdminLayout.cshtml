@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>ADMİN | GYKHABER</title>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f0f2f5;
+			margin: 0;
+		}
+
+		.sidebar {
+			width: 260px;
+			height: 100vh;
+			background: #1e1e2d;
+			position: fixed;
+			left: 0;
+			top: 0;
+			padding-top: 20px;
+			z-index: 1000;
+		}
+
+		.main-content {
+			margin-left: 260px;
+			padding: 30px;
+		}
+
+		.sidebar-brand {
+			padding: 0 25px 30px;
+			font-size: 1.5rem;
+			color: #fff;
+			font-weight: 700;
+			border-bottom: 1px solid #2d2d44;
+			margin-bottom: 20px;
+		}
+
+		.sidebar-section {
+			padding: 15px 25px 5px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			color: #494b66;
+			text-uppercase: true;
+		}
+
+		.nav-link {
+			padding: 12px 25px;
+			color: #a2a3b7 !important;
+			display: flex;
+			align-items: center;
+			transition: 0.3s;
+			text-decoration: none !important;
+		}
+
+			.nav-link:hover, .nav-link.active {
+				background: #1b1b28;
+				color: #009ef7 !important;
+			}
+
+			.nav-link i {
+				margin-right: 12px;
+				width: 20px;
+				text-align: center;
+			}
+
+		.card-wrapper {
+			background: #fff;
+			border-radius: 12px;
+			box-shadow: 0 0 20px rgba(0,0,0,0.05);
+			padding: 30px;
+			min-height: 85vh;
+		}
+
+		.logout-area {
+			position: absolute;
+			bottom: 20px;
+			width: 100%;
+			border-top: 1px solid #2d2d44;
+			padding-top: 15px;
+		}
+	</style>
+</head>
+<body>
+	<div class="sidebar shadow">
+		<div class="sidebar-brand text-primary">GYK<span class="text-white">PORTAL</span></div>
+		<div class="sidebar-section">Özet</div>
+		<a href="/Admin/Dashboard" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+		<div class="sidebar-section">İçerik Yönetimi</div>
+		<a href="/Admin/Categories" class="nav-link"><i class="fas fa-tags"></i> Kategoriler</a>
+		<a href="/Admin/News" class="nav-link"><i class="fas fa-newspaper"></i> Haberler</a>
+		<div class="sidebar-section">Etkileşim</div>
+		<a href="/Admin/Comments" class="nav-link"><i class="fas fa-comments"></i> Yorumlar</a>
+		<div class="logout-area">
+			<a href="/Home/Index" class="nav-link text-info small"><i class="fas fa-external-link-alt"></i> Siteye Dön</a>
+			<a href="javascript:void(0)" onclick="adminLogout()" class="nav-link text-danger fw-bold"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+		</div>
+	</div>
+	<div class="main-content">
+		<div class="card-wrapper">@RenderBody()</div>
+		<footer class="mt-4 text-center text-muted small">&copy; 2026 GYKHABER - İnternet Programcılığı II Ödevi</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		function adminLogout() {
+		localStorage.clear();
+		window.location.href = "/Auth/Login"; 
+		}
+	</script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

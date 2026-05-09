@@ -11,11 +11,9 @@ using UygAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Identity
 builder.Services.AddIdentity<User, Role>(options =>
 {
     options.Password.RequireDigit = false;
@@ -28,7 +26,6 @@ builder.Services.AddIdentity<User, Role>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -49,18 +46,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Repository ve UnitOfWork
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Services
 builder.Services.AddScoped<IJwtService, JwtService>();
 
-// Controllers
 builder.Services.AddControllers();
 
-// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -92,7 +85,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// CORS
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -106,7 +99,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Seed Data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -118,7 +110,6 @@ using (var scope = app.Services.CreateScope())
 
         await context.Database.MigrateAsync();
 
-        // Admin kullanýcý yoksa oluþtur
         var adminEmail = "admin@haberportal.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -136,7 +127,6 @@ using (var scope = app.Services.CreateScope())
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
 
-        // Editor kullanýcý yoksa oluþtur
         var editorEmail = "editor@haberportal.com";
         var editorUser = await userManager.FindByEmailAsync(editorEmail);
         if (editorUser == null)
@@ -161,7 +151,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

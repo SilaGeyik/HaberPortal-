@@ -162,7 +162,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3327),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6352),
                             Description = "Güncel haberler",
                             IsActive = true,
                             Name = "Gündem",
@@ -171,7 +171,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3329),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6353),
                             Description = "Teknoloji haberleri",
                             IsActive = true,
                             Name = "Teknoloji",
@@ -180,7 +180,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3330),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6355),
                             Description = "Spor haberleri",
                             IsActive = true,
                             Name = "Spor",
@@ -189,7 +189,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3331),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6356),
                             Description = "Ekonomi haberleri",
                             IsActive = true,
                             Name = "Ekonomi",
@@ -198,7 +198,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3333),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6358),
                             Description = "Magazin haberleri",
                             IsActive = true,
                             Name = "Magazin",
@@ -386,7 +386,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3229),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6250),
                             Description = "Sistem Yöneticisi",
                             IsActive = true,
                             Name = "Admin",
@@ -396,7 +396,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3231),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6252),
                             Description = "Haber Editörü",
                             IsActive = true,
                             Name = "Editor",
@@ -406,7 +406,7 @@ namespace UygAPI.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2026, 4, 4, 10, 42, 29, 663, DateTimeKind.Utc).AddTicks(3232),
+                            CreatedAt = new DateTime(2026, 4, 6, 9, 41, 38, 37, DateTimeKind.Utc).AddTicks(6254),
                             Description = "Normal Kullanıcı",
                             IsActive = true,
                             Name = "User",
