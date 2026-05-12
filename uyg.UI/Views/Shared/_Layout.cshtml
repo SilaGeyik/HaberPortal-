@@ -3,102 +3,423 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GYKHABER | Profesyonel Haber Portalı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>GYKHABER | Son Dakika Haberler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
-        .navbar { border-bottom: 3px solid #0d6efd; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .breaking-news-section { background: #1a1a1a; position: relative; z-index: 1000; height: 40px; display: flex; align-items: center; }
-        .marquee-wrapper { overflow: hidden; white-space: nowrap; width: 100%; }
-        .marquee-content { display: inline-block; white-space: nowrap; animation: marquee-animation 45s linear infinite; }
-        .marquee-content:hover { animation-play-state: paused; }
-        .news-item-link { color: #eee; text-decoration: none; font-weight: 500; font-size: 0.85rem; }
-        .news-item-link:hover { color: #0d6efd; }
-        .separator { color: #444; margin: 0 25px; }
-
-        /* HATAYI ÇÖZEN KISIM: ÇİFT @@ KULLANIMI */
-        @@keyframes marquee-animation {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #111;
         }
+
+        /* ÜST BAR & PİYASA */
+        .ntv-top-bar {
+            background-color: #1a1a1a;
+            color: #ccc;
+            font-size: 0.85rem;
+            padding: 8px 0;
+            font-weight: 500;
+        }
+
+        .finance-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 1px solid #333;
+            padding-left: 20px;
+            margin-left: 20px;
+        }
+
+        .finance-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+            .finance-item span {
+                color: #fff;
+            }
+
+        .text-up {
+            color: #00e676;
+        }
+
+        .text-down {
+            color: #ff1744;
+        }
+
+        .auth-links a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: 0.2s;
+        }
+
+            .auth-links a:hover {
+                color: #fff;
+            }
+
+        /* ANA MENÜ */
+        .navbar {
+            background-color: #fff;
+            border-bottom: 2px solid #1a1a1a;
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 900;
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+            color: #1a1a1a;
+            margin-right: 40px;
+        }
+
+            .navbar-brand span {
+                color: #cc0000;
+            }
+
+        .nav-link {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #333 !important;
+            text-transform: uppercase;
+            padding: 5px 12px !important;
+            transition: 0.2s;
+        }
+
+            .nav-link:hover {
+                color: #cc0000 !important;
+            }
+
+        /* ARAMA KUTUSU */
+        .search-box {
+            border: 1px solid #ddd;
+            border-radius: 0;
+            background: #f9f9f9;
+            width: 220px;
+        }
+
+        .search-btn {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-left: none;
+            color: #333;
+            border-radius: 0;
+        }
+
+        /* SON DAKİKA BANDI */
+        .breaking-bar {
+            border-bottom: 1px solid #ddd;
+            background: #fff;
+            height: 40px;
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+        }
+
+        .breaking-title {
+            background: #cc0000;
+            color: #fff;
+            font-weight: 900;
+            font-size: 0.8rem;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .breaking-marquee {
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            padding-left: 15px;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            animation: marqueeAnim 35s linear infinite;
+        }
+
+            .marquee-text:hover {
+                animation-play-state: paused;
+            }
+
+            .marquee-text a {
+                color: #111;
+                font-weight: 700;
+                font-size: 0.9rem;
+                text-decoration: none;
+                margin-right: 40px;
+            }
+
+                .marquee-text a:hover {
+                    color: #cc0000;
+                }
+
+        @@keyframes marqueeAnim {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block
+            margin-bottom: 20px;
+        }
+
+            .footer-logo span {
+                color: #cc0000;
+            }
+
+        .footer-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+            .footer-link:hover {
+                color: #fff;
+            }
+
+       
+        .heart-particle {
+            position: absolute;
+            color: #cc0000;
+            pointer-events: none;
+            user-select: none;
+            animation: heartBlast 1s ease-out forwards;
+            z-index: 9999;
+            font-size: 1.5rem;
+        }
+
+        @@keyframes heartBlast {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+       
+        .hint-bubble {
+            position: fixed;
+            bottom: -100px; 
+            left: 20px;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-size: 0.9rem;
+            z-index: 9999;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #333;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            max-width: 90%;
+        }
+
+            .hint-bubble.show {
+                bottom: 30px;
+                opacity: 1;
+            }
     </style>
 </head>
 <body>
-    <div class="breaking-news-section text-white shadow-sm">
-        <div class="container d-flex align-items-center">
-            <div class="bg-danger px-3 py-1 fw-bold small rounded-1 me-3 shadow" style="z-index: 20; min-width: fit-content;">SON DAKİKA</div>
-            <div class="marquee-wrapper">
-                <div id="breakingNews" class="marquee-content"></div>
+
+    <div class="ntv-top-bar d-none d-lg-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <span class="text-danger fw-bold"><i class="fas fa-circle me-1" style="font-size: 0.5rem; vertical-align: middle;"></i> CANLI İZLE</span>
+                <span class="ms-3 text-white"><i class="fas fa-cloud-sun text-warning me-1"></i> İstanbul 24°</span>
+
+                <div class="finance-wrapper">
+                    <div class="finance-item">BİST 100 <span>10.254</span> <i class="fas fa-caret-up text-up"></i></div>
+                    <div class="finance-item">USD <span>32.45</span> <i class="fas fa-caret-up text-up"></i></div>
+                    <div class="finance-item">EUR <span>35.12</span> <i class="fas fa-caret-down text-down"></i></div>
+                    <div class="finance-item">ALTIN <span>2.450</span> <i class="fas fa-caret-up text-up"></i></div>
+                </div>
+            </div>
+            <div class="auth-links" id="authLinks">
+                <a href="/Auth/Login"><i class="fas fa-user me-1"></i> Üye Girişi</a>
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/Home/Index"><span class="text-primary">GYK</span>HABER</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container align-items-center">
+            <a class="navbar-brand mb-0" href="/Home/Index">GYK<span>HABER</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars fs-2"></i>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto" id="topMenu">
-                    <li class="nav-item"><a class="nav-link fw-bold" href="javascript:void(0)" onclick="loadNews(null)">TÜMÜ</a></li>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="topMenu">
+                    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="loadNews(null)">GÜNDEM</a></li>
                 </ul>
-                <div id="authArea" class="d-flex align-items-center">
-                    <a href="/Auth/Login" class="btn btn-outline-primary btn-sm rounded-pill px-4 me-2">Giriş</a>
-                    <a href="/Auth/Register" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">Kayıt Ol</a>
-                </div>
+                <form class="d-flex ms-lg-4" onsubmit="event.preventDefault(); searchNews();">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control search-box" type="search" id="searchInput" placeholder="Haber ara...">
+                        <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>
-    <div class="container my-5" style="min-height: 80vh;">@RenderBody()</div>
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center"><p class="mb-0 small">&copy; 2026 GYKHABER - İnternet Programcılığı II Ödevi</p></div>
+
+    <div class="breaking-bar">
+        <div class="container d-flex p-0 h-100">
+            <div class="breaking-title">SON DAKİKA</div>
+            <div class="breaking-marquee">
+                <div id="breakingNews" class="marquee-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-4" style="min-height: 60vh;">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a class="footer-logo" href="/Home/Index">GYK<span>HABER</span></a>
+                    <p class="small text-muted pe-4">Güvenilir, tarafsız ve hızlı haberin adresi.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3 text-white">KURUMSAL</h6>
+                    <a href="#" class="footer-link">Hakkımızda</a>
+                    <a href="#" class="footer-link">Künye</a>
+                    <a href="#" class="footer-link">İletişim</a>
+                </div>
+                <div class="col-md-4 mb-4 text-md-end">
+                    <h6 class="fw-bold mb-3 text-white">BİZİ TAKİP EDİN</h6>
+                    <div class="mb-4">
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3 fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary opacity-25">
+            <div class="text-center text-muted small">
+                © 2026 GYKHABER Tüm Hakları Saklıdır.
+            </div>
+        </div>
     </footer>
+
+    <div id="hintBubble" class="hint-bubble">
+        <i class="fas fa-lightbulb text-warning"></i>
+        <span>Sürpriz animasyon için klavyede <strong>'litera'</strong> yazmayı dene! 😉</span>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
     <script>
         var apiUrl = "https://localhost:7278/api/";
 
         $(document).ready(function () {
-            $.get(apiUrl + "Categories", function (data) {
+            setTimeout(function() {
+                $("#hintBubble").addClass("show");
+                setTimeout(function() {
+                    $("#hintBubble").removeClass("show");
+                }, 6000);
+            }, 2000);
+
+            $.get(apiUrl + "Categories", data => {
                 data.forEach(c => {
-                    $("#topMenu").append(`<li class="nav-item"><a class="nav-link text-uppercase small fw-bold" href="javascript:void(0)" onclick="loadNews(${c.id})">${c.name}</a></li>`);
+                    $("#topMenu").append(`<li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="loadNews(${c.id})">${c.name}</a></li>`);
                 });
-            }).fail(function() {
-                console.warn("API Bağlantısı sağlanamadı. API projesi açık mı?");
             });
 
-            $.get(apiUrl + "News/latest?count=5", function (data) {
-                var content = data.map(n => `<a href="/Home/NewsDetail?id=${n.id}" class="news-item-link">${n.title}</a>`).join("<span class='separator'>•</span>");
-                $("#breakingNews").html(content + "<span class='separator'>•</span>" + content);
+            $.get(apiUrl + "News/latest?count=6", data => {
+                $("#breakingNews").html(data.map(n => `<a href="/Home/NewsDetail?id=${n.id}"><i class="fas fa-bolt text-danger me-2"></i>${n.title}</a>`).join(""));
             });
 
             var token = localStorage.getItem("token");
             if (token) {
+                var name = localStorage.getItem("userFullName") || "Kullanıcı";
                 var roles = JSON.parse(localStorage.getItem("roles") || "[]");
-                var displayName = localStorage.getItem("userFullName") || "Kullanıcı";
+                var isAdmin = roles.some(r => ["admin", "editor"].includes(r.toLowerCase()));
 
-                var isAdmin = roles.some(r => r.toLowerCase() === "admin");
-                var adminLink = isAdmin ? `<li><a class="dropdown-item" href="/Admin/News"><i class="fas fa-cog me-2 text-primary"></i>Admin Paneli</a></li>` : "";
-
-                $("#authArea").html(`
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle rounded-pill px-4 shadow-sm" type="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-2"></i>${displayName}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                            ${adminLink}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</a></li>
-                        </ul>
-                    </div>
+                var panelBtn = isAdmin ? `<a href="/Admin/News" class="text-warning fw-bold me-3"><i class="fas fa-cog me-1"></i> Yönetim Paneli</a>` : "";
+                $("#authLinks").html(`
+                    ${panelBtn}
+                    <span class="text-white"><i class="fas fa-user-circle me-1"></i> ${name}</span>
+                    <a href="javascript:void(0)" onclick="logout()" class="text-danger fw-bold ms-3">Çıkış</a>
                 `);
             }
         });
 
-        function logout() {
-            localStorage.clear();
-            location.href = "/Home/Index";
+        function searchNews() {
+            var q = $("#searchInput").val().trim();
+            if (q.length > 1) window.location.href = "/Home/Index?q=" + encodeURIComponent(q);
+        }
+        function logout() { localStorage.clear(); location.href = "/Home/Index"; }
+
+        
+        var secretCode = ['l', 'i', 't', 'e', 'r', 'a'];
+        var currentInput = [];
+        document.addEventListener('keydown', function(e) {
+            currentInput.push(e.key.toLowerCase());
+            currentInput = currentInput.slice(-secretCode.length);
+            if (JSON.stringify(currentInput) === JSON.stringify(secretCode)) {
+                $("#hintBubble").removeClass("show"); 
+                triggerEasterEgg();
+            }
+        });
+
+        function triggerEasterEgg() {
+            var duration = 5 * 1000; var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#cc0000', '#000000', '#ffffff'] });
+                confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#cc0000', '#000000', '#ffffff'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+
+            var msg = $('<div style="position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.9); color:#fff; padding:40px 60px; border-radius:15px; font-weight:900; font-size:2.5rem; z-index:10000; box-shadow:0 0 40px rgba(204,0,0,0.6); text-align:center;">' +
+                        '<i class="fas fa-heart text-danger mb-3 d-block" style="font-size:3rem;"></i>' +
+                        'LITERA APP YAYINDA!' +
+                        '<span style="display:block; font-size:1.1rem; font-weight:400; margin-top:15px; color:#ccc;">(Sırrı çözdün! Yazar ve eserler dünyası seni bekliyor 😉)</span>' +
+                        '</div>');
+            $('body').append(msg);
+            setTimeout(() => msg.fadeOut(1000, function() { $(this).remove(); }), 4000);
+            currentInput = [];
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

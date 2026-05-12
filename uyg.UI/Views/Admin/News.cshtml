@@ -98,7 +98,6 @@
 		$("#newsForm")[0].reset();
 		$("#mId").val("");
 		}
-		// Kategorileri Yükle
 		$.get(apiUrl + "Categories", function(data) {
 		var opt = "";
 		data.forEach(c => { opt += `<option value="${c.id}">${c.name}</option>`; });
@@ -106,7 +105,6 @@
 		newsModal.show();
 		});
 		}
-		// DÜZENLEME İÇİN VERİ GETİR
 		function getNewsForEdit(id) {
 		$.get(apiUrl + "News/" + id, function(n) {
 		$("#mId").val(n.id);

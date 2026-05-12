@@ -1,95 +1,225 @@
 ﻿@{
-	Layout = "_Layout";
+    Layout = "_Layout";
 }
-<div class="container">
-	<div class="d-flex justify-content-between align-items-center mb-5 mt-2">
-		<h2 class="fw-bold border-start border-primary border-4 ps-3 m-0">Günün Öne Çıkanları</h2>
-		<div class="text-muted small">Aktif <span id="newsCount" class="fw-bold text-primary">0</span> haber listeleniyor</div>
-	</div>
-	<div class="row" id="newsContainer" style="display:none;"></div>
-	<div id="loader" class="text-center my-5 py-5">
-		<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
-	</div>
-</div>
 <style>
+    /* CAROUSEL (SLIDER) */
+    .carousel-item img {
+        height: 460px;
+        width: 100%;
+        object-fit: cover;
+    }
 
-	.news-card {
-		border-radius: 12px;
-		transition: all 0.3s ease;
-		border: 1px solid #f0f0f0 !important;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
+    .carousel-caption {
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 40px 30px 20px 30px;
+        text-align: left;
+    }
 
-		.news-card:hover {
-			transform: translateY(-7px);
-			box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
-		}
+        .carousel-caption h2 {
+            font-weight: 900;
+            font-size: 2.2rem;
+            line-height: 1.2;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
+        }
 
-	.img-container {
-		height: 210px;
-		position: relative;
-		overflow: hidden;
-	}
+    .carousel-indicators [data-bs-target] {
+        width: 30px;
+        height: 4px;
+        background-color: #fff;
+        border: none;
+        opacity: 0.5;
+    }
 
-		.img-container img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
+    .carousel-indicators .active {
+        background-color: #cc0000;
+        opacity: 1;
+    }
 
-	.category-badge {
-		position: absolute;
-		bottom: 12px;
-		left: 12px;
-		font-size: 0.65rem;
-		padding: 5px 15px;
-	}
-	
-	.card-title {
-		font-size: 1.1rem;
-		font-weight: 700;
-		line-height: 1.4;
-		color: #212529;
-		margin-bottom: 15px;
-		display: block !important;
-		height: auto !important;
-		overflow: visible !important;
-		white-space: normal !important;
-		min-height: 60px; 
-	}
+    /* SAĞ LİSTE */
+    .side-news-item {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        text-decoration: none;
+        color: #111;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eaeaea;
+        transform-style: preserve-3d;
+    }
+
+        .side-news-item:hover .side-title {
+            color: #cc0000;
+        }
+
+        .side-news-item img {
+            width: 140px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 2px;
+            background-color: #e9ecef;
+            transform: translateZ(20px);
+        }
+
+    .side-title {
+        font-weight: 700;
+        font-size: 1rem;
+        line-height: 1.3;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: 0.2s;
+        transform: translateZ(30px);
+    }
+
+    /* ALT GRİD */
+    .grid-news {
+        display: block;
+        text-decoration: none;
+        color: #111;
+        margin-bottom: 30px;
+        transform-style: preserve-3d;
+    }
+
+        .grid-news:hover .grid-title {
+            color: #cc0000;
+        }
+
+        .grid-news img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            transform: translateZ(20px);
+        }
+
+    .grid-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        line-height: 1.3;
+        margin: 0;
+        height: 2.8rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        transition: 0.2s;
+        transform: translateZ(30px);
+    }
 </style>
+
+<div class="row mb-5 mt-3">
+    <div class="col-lg-8 pe-lg-4 mb-4 mb-lg-0">
+        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel" style="display:none;">
+            <div class="carousel-indicators" id="carouselIndicators"></div>
+            <div class="carousel-inner" id="carouselInner"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div id="loader" class="text-center p-5"><div class="spinner-border text-danger"></div></div>
+    </div>
+
+    <div class="col-lg-4" id="sideNews"></div>
+</div>
+
+<div class="row" id="bottomGrid"></div>
+
 @section Scripts {
-	<script>
-		$(document).ready(function () { loadNews(null); });
-		function loadNews(catId) {
-		$("#newsContainer").hide(); $("#loader").show();
-		var url = apiUrl + (catId ? "News/category/" + catId : "News/latest?count=12");
-		$.get(url, function (data) {
-		var html = "";
-		$("#newsCount").text(data.length);
-		data.forEach(n => {
-		var finalImg = n.imageUrl || n.ImageUrl || "https://picsum.photos/400/220";
-		html += `
-		<div class="col-lg-4 col-md-6 mb-4">
-		<div class="card news-card shadow-sm border-0">
-		<div class="img-container">
-		<img src="${finalImg}" onerror="this.src='https://picsum.photos/400/220?random=${n.id}'">
-		<span class="badge bg-primary category-badge rounded-pill shadow-sm">${n.categoryName}</span>
-		</div>
-		<div class="card-body p-4 d-flex flex-column flex-grow-1">
-		<div class="text-muted small mb-2"><i class="far fa-calendar-alt me-1 text-primary"></i> ${new Date(n.publishedAt).toLocaleDateString()}</div>
-		<h5 class="card-title">${n.title}</h5>
-		<p class="text-muted small mb-4" style="flex-grow: 1;">${n.summary ? n.summary.substring(0, 85) + '...' : ''}</p>
-		<div class="mt-auto"><a href="/Home/NewsDetail?id=${n.id}" class="btn btn-outline-primary w-100 rounded-pill fw-bold btn-sm py-2">HABERİ OKU</a></div>
-		</div>
-		</div>
-		</div>`;
-		});
-		$("#loader").hide();
-		$("#newsContainer").html(html || "<p class='text-center'>İçerik bulunamadı.</p>").fadeIn(500);
-		});
-		}
-	</script>
+    <script>
+        var defaultImages = [
+            "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+            "https://images.unsplash.com/photo-1495020689067-958852a7765e?w=800&q=80",
+            "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800&q=80",
+            "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80"
+        ];
+
+        function getSafeImg(url, id) {
+            return (url && url.startsWith("http")) ? url : defaultImages[id % defaultImages.length];
+        }
+
+        $(document).ready(function () {
+            var q = new URLSearchParams(window.location.search).get('q');
+            loadNews(null, q);
+        });
+
+        function loadNews(catId, q = null) {
+            $("#newsCarousel").hide(); $("#sideNews, #bottomGrid").empty(); $("#loader").show();
+            var url = apiUrl + (q ? "News/search?q=" + q : (catId ? "News/category/" + catId : "News/latest?count=16"));
+
+            $.get(url, function (data) {
+                if(data.length > 0) {
+                    var sliderCount = Math.min(data.length, 3);
+                    var indHtml = ""; var innerHtml = "";
+                    for(var i=0; i<sliderCount; i++) {
+                        var m = data[i];
+                        var mImg = getSafeImg(m.imageUrl, m.id);
+                        var activeClass = i === 0 ? "active" : "";
+                        indHtml += `<button type="button" data-bs-target="#newsCarousel" data-bs-slide-to="${i}" class="${activeClass}"></button>`;
+                        innerHtml += `
+                            <div class="carousel-item ${activeClass}">
+                                <a href="/Home/NewsDetail?id=${m.id}">
+                                    <img src="${mImg}" class="d-block w-100" onerror="this.src=fallbackImg">
+                                    <div class="carousel-caption">
+                                        <span class="badge bg-danger mb-2 px-2 py-1">${m.categoryName.toUpperCase()}</span>
+                                        <h2 class="text-white">${m.title}</h2>
+                                    </div>
+                                </a>
+                            </div>`;
+                    }
+                    $("#carouselIndicators").html(indHtml);
+                    $("#carouselInner").html(innerHtml);
+                    $("#newsCarousel").show();
+
+                    var sideHtml = "";
+                    var sideCount = Math.min(data.length, 7);
+                    for(var i=sliderCount; i<sideCount; i++) {
+                        var sn = data[i];
+                        var snImg = getSafeImg(sn.imageUrl, sn.id);
+                        sideHtml += `
+                            <a href="/Home/NewsDetail?id=${sn.id}" class="side-news-item">
+                                <img src="${snImg}" onerror="this.src=fallbackImg">
+                                <div>
+                                    <span class="text-danger small fw-bold d-block mb-1" style="transform: translateZ(20px);">${sn.categoryName.toUpperCase()}</span>
+                                    <h6 class="side-title">${sn.title}</h6>
+                                </div>
+                            </a>`;
+                    }
+                    $("#sideNews").html(sideHtml);
+
+                    var gridHtml = "";
+                    for(var i=sideCount; i<data.length; i++) {
+                        var gn = data[i];
+                        var gnImg = getSafeImg(gn.imageUrl, gn.id);
+                        gridHtml += `
+                            <div class="col-md-3 col-sm-6">
+                                <a href="/Home/NewsDetail?id=${gn.id}" class="grid-news">
+                                    <img src="${gnImg}" onerror="this.src=fallbackImg">
+                                    <h6 class="grid-title">${gn.title}</h6>
+                                </a>
+                            </div>`;
+                    }
+                    $("#bottomGrid").html(gridHtml);
+
+                    // 3D TILT EFEKTİ 
+                    if (window.innerWidth > 992) {
+                        VanillaTilt.init(document.querySelectorAll(".grid-news, .side-news-item"), {
+                            max: 8, speed: 400, glare: true, "max-glare": 0.3
+                        });
+                    }
+                }
+                $("#loader").hide();
+            });
+        }
+    </script>
 }

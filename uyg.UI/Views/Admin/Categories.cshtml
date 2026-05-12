@@ -34,6 +34,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content border-0 shadow-lg rounded-4">
@@ -55,86 +56,109 @@
 		</div>
 	</div>
 </div>
+
 @section Scripts {
 	<script>
 		var apiUrl = "https://localhost:7278/api/Categories";
-		var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+		var editModal;
+
 		function loadCategories() {
-		$.get(apiUrl, function(data) {
-		var h = "";
-		data.forEach(c => {
-		h += `
-		<tr>
-		<td class="ps-4 text-muted">#${c.id}</td>
-		<td><span class="fw-bold text-dark">${c.name}</span></td>
-		<td class="text-end pe-4">
-		<button class="btn btn-light btn-sm rounded-circle me-1" onclick="openEditModal(${c.id}, '${c.name}')" title="Düzenle">
-		<i class="fas fa-pen text-primary"></i>
-		</button>
-		<button class="btn btn-light btn-sm rounded-circle" onclick="deleteCategory(${c.id})" title="Sil">
-		<i class="fas fa-trash text-danger"></i>
-		</button>
-		</td>
-		</tr>`;
-		});
-		$("#catList").html(h);
-		});
+			$.get(apiUrl, function(data) {
+				var h = "";
+				data.forEach(c => {
+					h += `
+					<tr>
+						<td class="ps-4 text-muted">#${c.id}</td>
+						<td><span class="fw-bold text-dark">${c.name}</span></td>
+						<td class="text-end pe-4">
+							<button class="btn btn-light btn-sm rounded-circle me-1" onclick="openEditModal(${c.id}, '${c.name.replace(/'/g, "\\'")}')" title="Düzenle">
+								<i class="fas fa-pen text-primary"></i>
+							</button>
+							<button class="btn btn-light btn-sm rounded-circle" onclick="deleteCategory(${c.id})" title="Sil">
+								<i class="fas fa-trash text-danger"></i>
+							</button>
+						</td>
+					</tr>`;
+				});
+				$("#catList").html(h);
+			});
 		}
-		
+
 		function addCategory() {
-		var name = $("#newCatName").val().trim();
-		if(!name) { alert("Lütfen bir isim yazın!"); return; }
-		var token = localStorage.getItem("token");
-		$.ajax({
-		url: apiUrl,
-		type: "POST",
-		headers: { "Authorization": "Bearer " + token },
-		contentType: "application/json",
-		data: JSON.stringify({ name: name }),
-		success: function() {
-		$("#newCatName").val("");
-		loadCategories();
-		alert("Kategori eklendi!");
+			var name = $("#newCatName").val().trim();
+			if(!name) { alert("Lütfen bir isim yazın!"); return; }
+			var token = localStorage.getItem("token");
+			$.ajax({
+				url: apiUrl,
+				type: "POST",
+				headers: { "Authorization": "Bearer " + token },
+				contentType: "application/json",
+				data: JSON.stringify({ name: name }),
+				success: function() {
+					$("#newCatName").val("");
+					loadCategories();
+					alert("Kategori eklendi!");
+				},
+				error: function() {
+					alert("Kategori eklenirken bir hata oluştu.");
+				}
+			});
 		}
-		});
-		}
+
 		function openEditModal(id, name) {
-		$("#editId").val(id);
-		$("#editName").val(name);
-		editModal.show();
+			$("#editId").val(id);
+			$("#editName").val(name);
+			editModal.show();
 		}
+
 		function updateCategory() {
-		var id = $("#editId").val();
-		var name = $("#editName").val().trim();
-		var token = localStorage.getItem("token");
-		$.ajax({
-		url: apiUrl + "/" + id,
-		type: "PUT",
-		headers: { "Authorization": "Bearer " + token },
-		contentType: "application/json",
-		data: JSON.stringify({ id: parseInt(id), name: name }),
-		success: function() {
-		editModal.hide();
-		loadCategories();
-		alert("Kategori güncellendi!");
+			var id = $("#editId").val();
+			var name = $("#editName").val().trim();
+			var token = localStorage.getItem("token");
+			if(!name) { alert("Lütfen bir isim yazın!"); return; }
+
+			$.ajax({
+				url: apiUrl + "/" + id,
+				type: "PUT",
+				headers: { "Authorization": "Bearer " + token },
+				contentType: "application/json",
+				data: JSON.stringify({ id: parseInt(id), name: name }),
+				success: function() {
+					editModal.hide();
+					loadCategories();
+					alert("Kategori güncellendi!");
+				},
+				error: function() {
+					alert("Güncelleme işlemi başarısız oldu.");
+				}
+			});
 		}
-		});
-		}
-		
+
 		function deleteCategory(id) {
-		if(confirm("Bu kategoriyi silmek istediğinize emin misiniz? (Bu kategoriye bağlı haberler varsa silinmeyebilir)")) {
-		var token = localStorage.getItem("token");
-		$.ajax({
-		url: apiUrl + "/" + id,
-		type: "DELETE",
-		headers: { "Authorization": "Bearer " + token },
-		success: function() { loadCategories(); }
+			if(confirm("Bu kategoriyi silmek istediğinize emin misiniz? (Bu kategoriye bağlı haberler varsa silinmeyebilir)")) {
+				var token = localStorage.getItem("token");
+				$.ajax({
+					url: apiUrl + "/" + id,
+					type: "DELETE",
+					headers: { "Authorization": "Bearer " + token },
+					success: function() {
+						loadCategories();
+					},
+					error: function() {
+						alert("Silme işlemi başarısız oldu. Kategoriye bağlı haberler olabilir.");
+					}
+				});
+			}
+		}
+
+		// Tüm sayfa yüklendikten sonra modal'ı tanımla ve kategorileri getir
+		$(document).ready(function() {
+			editModal = new bootstrap.Modal(document.getElementById('editModal'));
+			loadCategories();
 		});
-		}
-		}
-		$(document).ready(loadCategories);
 	</script>
 }
+
 <style>
 	.rounded-pill-start {
 		border-radius: 50px 0 0 50px !important;
